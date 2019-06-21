@@ -6,6 +6,7 @@ import Main from './login/main'
 import Contact from './login/Contact'
 import Home from './login/home'
 import MainLayout from './newComponents/MainLayout'
+import UpdateContact from './login/updateContact'
 import Callback from './Callback';
 
 class Routers extends React.Component {
@@ -19,6 +20,7 @@ class Routers extends React.Component {
         <Route path="/main" component={Main} />
         <Route path="/contact" component={Contact} />
         <Route path="/home" component={Home} />
+        <Route path="/updatecon" component={UpdateContact} />
         <Route exact path='/callback' component={Callback}/>
       </div>
     </Router>
