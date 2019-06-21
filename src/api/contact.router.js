@@ -26,4 +26,23 @@ contactRoutes.route('/:userId').get(function (req, res) {
     });
 });
 
+contactRoutes.route('/update').post(function (req, res) {
+    Contact.findOneAndUpdate({userId:req.body.userId}, {
+        name: req.body.name,
+        designation: req.body.designation,
+        mobile: req.body.mobile,
+        email: req.body.email,
+        address: req.body.address
+    }, {new: true}, (error, resp) =>{
+        if(!resp) {
+            console.log("No Contact Data found..!");
+        }
+        res.send(Contact)
+
+        if(error){
+            console.log("Error while updating");
+        }
+    });
+});
+
 module.exports = contactRoutes;
