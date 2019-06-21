@@ -1,7 +1,7 @@
 import React from 'react'
 import * as sendCredential from './service/sendCredentials';
 import { connect } from 'react-redux';
-import { user } from '../redux/action';
+import { user, setCurrentView } from '../redux/action';
 import Chart from "react-google-charts";
 import axios from 'axios';
 import image from '../api/uploads/default.png'
@@ -53,7 +53,6 @@ class Contact extends React.Component {
             response.forEach(obj => {
                 data.push([obj.year, obj.points, "color: gray"]);
             });
-            console.log('chart', data);
             this.setState({
                 data
             });
@@ -84,11 +83,9 @@ class Contact extends React.Component {
             console.log('iiii',res)
           if (res) {
               this.loadImage();
-            alert("Image has been successfully uploaded using multer");
           }
         })
         .catch((err) => {
-            console.log('iiii',err)
           alert("Error while uploading image using multer");
         });
         }
@@ -97,7 +94,6 @@ class Contact extends React.Component {
             console.log('session ',sessionStorage.getItem('userIds'))
             sendCredential.getImage(this.props.userId.userId!== ''? this.props.userId.userId: sessionStorage.getItem('userIds'))
                 .then(response => {
-                console.log('imagess', response);
                 let img = 'data:image/jpeg;base64,' + response.text;
                 this.setState({
                     selectedFile : img
@@ -169,7 +165,7 @@ class Contact extends React.Component {
                 </div>
             </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-7">
             <div className="profile-head">
                 <h5>Welcome! {this.state.name}</h5>
                 <h6>{this.state.designation}</h6>
@@ -184,14 +180,16 @@ class Contact extends React.Component {
                 </ul>
             </div>
         </div>
-        <div className="col-md-2">
+        <div className="col-md-1">
+        <button type="button" className="btn btn-info btn-sm" onClick={() => this.props.setCurrentView("updateContact")}><i className="fas fa-edit"></i> Edit</button>
         </div>
     </div>
     <div className="row">
         <div className="col-md-4">
             <div className="profile-work">
                 <p>WORK LINK</p>
-                <a href="">Website Link</a><br></br>
+                <a href="">Facebook</a><br></br>
+                <a href="">LinkedIn</a><br></br>
                 <p>SKILLS</p>
                 <a href="">Web Designer</a><br></br>
                 <a href="">Web Developer</a><br></br>
@@ -252,4 +250,4 @@ const mapStateToProps = store => {
       userId: store.userId
     };
   };
-export default connect(mapStateToProps, { user })(Contact)
+export default connect(mapStateToProps, { user, setCurrentView })(Contact)
