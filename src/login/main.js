@@ -1,6 +1,7 @@
 import React from 'react'
 import Home from './home';
 import Contact from './Contact';
+import UpdateContact from './updateContact';
 import { connect } from 'react-redux';
 import { setCurrentView } from '../redux/action';
 import auth0Client from '../Auth';
@@ -76,6 +77,7 @@ class Main extends React.Component {
                     <div className="container">
                         {this.state.currentView === 'contact' ? <Contact /> : null }
                         {this.state.currentView === 'home' ?  <Home/> : null }
+                        {this.state.currentView === 'updateContact' ? <UpdateContact/> : null }
                     </div>
                 </div>
             </main>
