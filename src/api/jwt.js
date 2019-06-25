@@ -14,7 +14,8 @@ function jwt() {
             '/contact/users',
             '/contact/update',
             '/chart/users',
-            '/upload/image'
+            '/upload/image',
+            '/upload/addimg'
         ]
     });
 }
