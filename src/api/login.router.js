@@ -30,8 +30,8 @@ loginRoutes.route('/').get(function (req, res) {
 
 
 // Find a single Login data
-loginRoutes.route('/:userName').get(function (req, res) {
-    Login.findOne({userName: req.params.userName})
+loginRoutes.route('/users').get(function (req, res) {
+    Login.findOne({userName: req.query.userName})
     .then(Login => {
         if(!Login) {
             return res.status(404).send({

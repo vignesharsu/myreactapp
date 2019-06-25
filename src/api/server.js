@@ -6,6 +6,7 @@ const contactRoute = require('./contact.router');
 const chartRoute = require('./chart.router');
 const uploadRoute = require('./upload.router');
 const path = require('path');
+const jwt = require('./jwt');
 
 // create express app
 const app = express();
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'uploads')))
+app.use(jwt());
 
 // Configuring the database
 const mongoose = require('mongoose');

@@ -23,17 +23,12 @@ const upload = multer({
 //Add Image  to Mongo DB
 uploadRoutes.route("/addimg").post(upload.single('image'), function (req, res) {
   const upload = new Upload();
-  console.log('fdfdfdff',req.body)
 
   Upload.findOneAndUpdate({userId:req.body.userId}, {
     image: fs.readFileSync('./uploads/Image.jpg')
 }, {new: true}, (error, resp) =>{
     if(!resp) {
-        console.log('new')
         upload.image = fs.readFileSync('./uploads/Image.jpg');
-        //upload.image.data = new Buffer(req.body.data, 'base64')
-        //upload.image.data = req.body.data;
-        //upload.image.contentType = "image/jpeg";
         upload.userId = req.body.userId;
         upload.save()
             .then(res => {
@@ -45,7 +40,6 @@ uploadRoutes.route("/addimg").post(upload.single('image'), function (req, res) {
             }
             });
     }else{
-        console.log('up')
         res.send(upload);
     }
 
@@ -56,12 +50,12 @@ uploadRoutes.route("/addimg").post(upload.single('image'), function (req, res) {
 });
 
 // Find a Image data
-uploadRoutes.route('/:userId').get(function (req, res) {
-  Upload.findOne({userId: req.params.userId})
+uploadRoutes.route('/image').get(function (req, res) {
+  Upload.findOne({userId: req.query.userId})
     .then(Upload => {
         if(!Upload) {
             return res.status(404).send({
-                message: "Upload not found with id " + req.params.userId
+                message: "Upload not found with id " + req.query.userId
             });            
         }
         const buf = Buffer.from(Upload.image.toString('base64'));
@@ -74,11 +68,11 @@ uploadRoutes.route('/:userId').get(function (req, res) {
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "Upload not found with id " + req.params.userId
+                message: "Upload not found with id " + req.query.userId
             });                
         }
         return res.status(500).send({
-            message: "Error retrieving Upload with id " + req.params.userId
+            message: "Error retrieving Upload with id " + req.query.userId
         });
     });
 });

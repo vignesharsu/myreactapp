@@ -5,23 +5,23 @@ const contactRoutes = express.Router();
 let Contact = require('./contact.model');
 
 // Find a Contact data
-contactRoutes.route('/:userId').get(function (req, res) {
-    Contact.findOne({userId: req.params.userId})
+contactRoutes.route('/users').get(function (req, res) {
+    Contact.findOne({userId: req.query.userId})
     .then(Contact => {
         if(!Contact) {
             return res.status(404).send({
-                message: "Contact not found with id " + req.params.userId
+                message: "Contact not found with id " + req.query.userId
             });            
         }
         res.send(Contact);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "Contact not found with id " + req.params.userId
+                message: "Contact not found with id " + req.query.userId
             });                
         }
         return res.status(500).send({
-            message: "Error retrieving Contact with id " + req.params.userId
+            message: "Error retrieving Contact with id " + req.query.userId
         });
     });
 });
