@@ -3,7 +3,8 @@ import superagent from 'superagent';
 export default function sendCredentials(username, password) {
     const promise =  new Promise((resolve, reject) => {
         superagent
-        .get('http://localhost:4000/login/'+username)
+        .get('http://localhost:4000/login/users')
+        .query({userName : username, password: password})
         .then(res => {
             return resolve(JSON.parse(res.text));
             // res.body, res.headers, res.status
@@ -19,7 +20,8 @@ export default function sendCredentials(username, password) {
 export function getContactInfo(userid) {
     const promise =  new Promise((resolve, reject) => {
         superagent
-        .get('http://localhost:4000/contact/'+userid)
+        .get('http://localhost:4000/contact/users')
+        .query({userId : userid})
         .then(res => {
             return resolve(res);
             // res.body, res.headers, res.status
@@ -54,7 +56,8 @@ export function updateContactInfo(userid,name,designation,
 export function getChartData(userid) {
     const promise =  new Promise((resolve, reject) => {
         superagent
-        .get('http://localhost:4000/chart/user/'+userid)
+        .get('http://localhost:4000/chart/users')
+        .query({userId : userid})
         .then(res => {
             return resolve(JSON.parse(res.text));
             // res.body, res.headers, res.status
@@ -70,7 +73,8 @@ export function getChartData(userid) {
 export function getImage(userid) {
     const promise =  new Promise((resolve, reject) => {
         superagent
-        .get('http://localhost:4000/upload/'+userid)
+        .get('http://localhost:4000/upload/image')
+        .query({userId: userid})
         .then(res => {
             return resolve(res);
             // res.body, res.headers, res.status
