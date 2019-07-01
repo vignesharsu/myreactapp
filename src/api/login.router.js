@@ -1,19 +1,58 @@
 const express = require('express');
+const crypto = require('crypto')
 const loginRoutes = express.Router();
 
 // Require Login model in our routes module
 let Login = require('./login.model');
+let Contact = require('./contact.model');
+var aval = "Yes";
+// Generate UserId 
+
+function genUserId(len){
+  return crypto
+  .randomBytes(Math.ceil(len/2))
+  .toString('hex')
+  .slice(0,len)
+}
 
 // Defined store route
-loginRoutes.route('/add').post(function (req, res) {
-  let Login = new Login(req.body);
-  Login.save()
-    .then(Login => {
-      res.status(200).json({'Login': 'Login in added successfully'});
-    })
-    .catch(err => {
-    res.status(400).send("unable to save to database");
-    });
+loginRoutes.route('/register').post(function (req, res) {
+  const login1 = new Login();
+  const contact = new Contact();
+  const Id = genUserId(4);
+  Login.findOne({userId : Id})
+  .then(Login =>{
+    if(!Login){
+      aval = "No";
+    }
+
+    if(aval == "No"){
+      login1.userId = Id;
+      contact.userId = Id;
+      contact.name = req.body.name;
+      contact.designation = req.body.designation;
+      contact.mobile = req.body.mobile;
+      contact.email = req.body.email;
+      contact.address = req.body.address;
+      login1.userName = req.body.userName;
+      login1.password = req.body.password 
+      login1.save()
+        .then(logins => {
+          if(logins){
+            contact.save().then(contacts =>{
+              if(contacts){
+                res.status(200).json({'Login': 'Login in added successfully'});
+              }
+            })
+          }
+        })
+        .catch(err => {
+          if(err){
+            res.status(400).send("unable to save to database");
+        }
+        });
+    }//if
+  });
 });
 
 // Defined get data(index or listing) route

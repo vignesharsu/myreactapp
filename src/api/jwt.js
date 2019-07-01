@@ -11,6 +11,7 @@ function jwt() {
     return expressJwt({ secret }).unless({
         path: [
             '/login/users',
+            '/login/register',
             '/contact/users',
             '/contact/update',
             '/chart/users',
