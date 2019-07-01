@@ -1,6 +1,6 @@
 import superagent from 'superagent';
 
-export default function sendCredentials(username, password) {
+export function getUserInfo(username, password) {
     const promise =  new Promise((resolve, reject) => {
         superagent
         .get('http://localhost:4000/login/users')
@@ -75,6 +75,25 @@ export function getImage(userid) {
         superagent
         .get('http://localhost:4000/upload/image')
         .query({userId: userid})
+        .then(res => {
+            return resolve(res);
+            // res.body, res.headers, res.status
+        })
+        .catch(err => {
+            return reject(err);
+            // err.message, err.response
+        });
+    });
+    return promise;    
+};
+
+export function registerUser(user,password,name,designation,
+    mobile,email,address) {
+    const promise =  new Promise((resolve, reject) => {
+        superagent
+        .post('http://localhost:4000/login/register')
+        .send({userName: user, password: password, name: name, designation: designation, mobile: mobile,
+        email: email, address: address})
         .then(res => {
             return resolve(res);
             // res.body, res.headers, res.status
